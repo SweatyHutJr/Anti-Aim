@@ -27,14 +27,16 @@ static uintptr_t ScanSig(const char* module, const char* sig)
     auto* sec = IMAGE_FIRST_SECTION(nt);
     for (WORD i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++sec)
     {
-        if (!(sec->Characteristics & IMAGE_SCN_MEM_EXECUTE)) continue;
+        if (!(sec->Characteristics & IMAGE_SCN_MEM_EXECUTE))
+            continue;
         uint8_t* base = reinterpret_cast<uint8_t*>(h) + sec->VirtualAddress;
         uint8_t* end = base + sec->Misc.VirtualSize;
         const char* p = sig;
         uint8_t bytes[256]; bool mask[256]; int n = 0;
         while (*p && n < 256) {
             while (*p == ' ') ++p;
-            if (!*p) break;
+            if (!*p) 
+                break;
             if (*p == '?') { bytes[n] = 0; mask[n] = false; ++n; ++p; if (*p == '?') ++p; continue; }
             auto hex = [](char c) {
                 if (c >= '0' && c <= '9') return c - '0';
@@ -58,9 +60,12 @@ static bool IsReadable(const void* ptr, size_t len)
 {
     if (!ptr) return false;
     MEMORY_BASIC_INFORMATION mbi{};
-    if (!VirtualQuery(ptr, &mbi, sizeof(mbi))) return false;
-    if (mbi.State != MEM_COMMIT) return false;
-    if (mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD)) return false;
+    if (!VirtualQuery(ptr, &mbi, sizeof(mbi))) 
+        return false;
+    if (mbi.State != MEM_COMMIT)
+        return false;
+    if (mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD))
+        return false;
     uintptr_t start = reinterpret_cast<uintptr_t>(ptr);
     uintptr_t end = start + len;
     uintptr_t regStart = reinterpret_cast<uintptr_t>(mbi.BaseAddress);
@@ -82,10 +87,14 @@ double __fastcall H::CreateMoveHook(CCSGOInput* input, unsigned int slot, void* 
     aa.jitterAngle = settings.antiaimJitterAngle;
 
     switch (settings.antiaimMode) {
-    case 0: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Jitter;     break;
-    case 1: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Spin;       break;
-    case 2: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Static;     break;
-    case 3: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::TurnAround; break;
+    case 0: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Jitter;    
+        break;
+    case 1: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Spin;      
+        break;
+    case 2: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Static;   
+        break;
+    case 3: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::TurnAround; 
+        break;
     }
 
     auto orig = reinterpret_cast<CreateMoveFn>(H::oCreateMove.GetOriginal());
@@ -119,7 +128,8 @@ __int64 CS_FASTCALL H::ValidateInputHook(CCSGOInput* pInput)
 {
     g_validateInputCalls++;
     auto original = reinterpret_cast<ValidateInputFn>(H::oValidateInput.GetOriginal());
-    if (!original) return 0;
+    if (!original)
+        return 0;
 
 #if AA_DEBUG_PHASE >= 2
     if (F::RAGEBOT::ANTIAIM::settings.enabled &&
@@ -156,12 +166,14 @@ bool Hooks::Init()
 {
     printf("[Init] BUILD MARKER v13\n");
     HMODULE hClient = GetModuleHandleA("client.dll");
-    if (!hClient) return false;
+    if (!hClient)
+        return false;
     uintptr_t clientBase = reinterpret_cast<uintptr_t>(hClient);
 
     uintptr_t inputAddr = clientBase + cs2_dumper::offsets::client_dll::dwCSGOInput;
     void* rawInput = *reinterpret_cast<void**>(inputAddr);
-    if (!rawInput) { printf("[Init] input is null\n"); return false; }
+    if (!rawInput) { printf("[Init] input is null\n"); 
+    return false; }
     printf("[Init] rawInput=0x%p\n", rawInput);
 
     void** vtable = reinterpret_cast<void**>(rawInput);
@@ -174,13 +186,15 @@ bool Hooks::Init()
     if (!H::oCreateMove.Create(vtable, SLOT_CREATEMOVE,
         reinterpret_cast<void*>(&H::CreateMoveHook)))
     {
-        printf("[Init] oCreateMove.Create failed\n"); return false;
+        printf("[Init] oCreateMove.Create failed\n");
+        return false;
     }
 
     if (!H::oValidateInput.Create(vtable, SLOT_VALIDATEINPUT,
         reinterpret_cast<void*>(&H::ValidateInputHook)))
     {
-        printf("[Init] oValidateInput.Create failed\n"); return false;
+        printf("[Init] oValidateInput.Create failed\n");
+        return false;
     }
 
     printf("[Init] Hooks OK (CM=%d, VI=%d)\n", SLOT_CREATEMOVE, SLOT_VALIDATEINPUT);

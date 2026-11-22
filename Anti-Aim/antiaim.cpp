@@ -8,8 +8,10 @@ namespace F::RAGEBOT::ANTIAIM
 
     bool CanRun(CBaseUserCmdPB* pBaseCmd, CCSPlayerController*, C_CSPlayerPawn*)
     {
-        if (!settings.enabled) return false;
-        if (!pBaseCmd) return false;
+        if (!settings.enabled) 
+            return false;
+        if (!pBaseCmd)
+            return false;
         return true;
     }
 
@@ -17,7 +19,8 @@ namespace F::RAGEBOT::ANTIAIM
     static void MovementFix(CBaseUserCmdPB* pBaseCmd,
         const QAngle_t& real, const QAngle_t& fake)
     {
-        if (!settings.moveFix) return;
+        if (!settings.moveFix)
+            return;
 
         float fm = pBaseCmd->forwardmove;
         float sm = pBaseCmd->leftmove;
@@ -45,10 +48,12 @@ namespace F::RAGEBOT::ANTIAIM
 
     void OnMove(CBaseUserCmdPB* pBaseCmd, CCSPlayerController*, C_CSPlayerPawn*)
     {
-        if (!CanRun(pBaseCmd, nullptr, nullptr)) return;
+        if (!CanRun(pBaseCmd, nullptr, nullptr))
+            return;
 
         CMsgQAngle* va = pBaseCmd->viewangles;
-        if (!va) return;
+        if (!va)
+            return;
 
         QAngle_t real(va->x, va->y, va->z);
         actual_angles = real;

@@ -68,7 +68,8 @@ DWORD WINAPI MainThread(LPVOID lpParam)
         HWND fg = GetForegroundWindow();
         char cls[256] = {};
         GetClassNameA(fg, cls, 256);
-        if (strcmp(cls, "SDL_app") != 0) { Sleep(50); continue; }
+        if (strcmp(cls, "SDL_app") != 0) { Sleep(50);
+        continue; }
 
         OverlayFrame();
         Sleep(1);

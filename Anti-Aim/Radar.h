@@ -51,7 +51,8 @@ inline void DrawRadar() {
 
         float dx = ep.cords[0] - localPos.cords[0];
         float dy = ep.cords[1] - localPos.cords[1];
-        if (dx * dx + dy * dy > range * range) continue;
+        if (dx * dx + dy * dy > range * range) 
+            continue;
 
         float fwd = dx * cy + dy * sy;
         float right = dx * sy - dy * cy;

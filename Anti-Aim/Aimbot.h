@@ -77,7 +77,7 @@ inline void runAimbot(uintptr_t clientBase,
         QAngle targetAngle = calcAngle(localEye, headPos);
         float fovX = std::abs(targetAngle.x - currentAngle.x);
 
-        // Normalize yaw delta to [-180, 180] to handle wrap-around
+
         float dy = targetAngle.y - currentAngle.y;
         while (dy > 180.0f) dy -= 360.0f;
         while (dy < -180.0f) dy += 360.0f;

@@ -11,7 +11,8 @@ class VmtHook
 public:
     bool Create(void** vtable, int slot, void* hook)
     {
-        if (!vtable || !hook || slot < 0) return false;
+        if (!vtable || !hook || slot < 0)
+            return false;
 
         m_vtable = vtable;
         m_slot = slot;
@@ -31,7 +32,8 @@ public:
 
     void Destroy()
     {
-        if (!m_vtable) return;
+        if (!m_vtable)
+            return;
         DWORD old;
         if (VirtualProtect(&m_vtable[m_slot], sizeof(void*),
             PAGE_EXECUTE_READWRITE, &old))

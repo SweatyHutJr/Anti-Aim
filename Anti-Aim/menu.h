@@ -26,23 +26,18 @@
 #include "hooks.h"
 #include "AntiAim.h"
 
-inline void DrawRadar();   // defined in Radar.h
+inline void DrawRadar();  
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-// ============================================================================
-// D3D globals
-// ============================================================================
 inline ID3D11Device* pd3dDevice = nullptr;
 inline ID3D11DeviceContext* pd3dDeviceContext = nullptr;
 inline IDXGISwapChain* swapChain = nullptr;
 inline ID3D11RenderTargetView* mainRenderTargetView = nullptr;
 inline HWND                     hwndOverlay = nullptr;
 
-// ============================================================================
-// ESP state
-// ============================================================================
+
 inline uintptr_t clientBase = 0;
 inline uintptr_t entityList = 0;
 inline uintptr_t viewMatrixPtr = 0;
@@ -213,7 +208,7 @@ inline void DrawMenu() {
         settings.radarOffsetX = 0.0f;
         settings.radarOffsetY = 0.0f;
 
-        // Anti-aim
+
         bool  antiaimEnabled = true;
         bool  antiaimJitter = true;
         float antiaimPitch = 89.f;

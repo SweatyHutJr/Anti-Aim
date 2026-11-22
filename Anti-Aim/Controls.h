@@ -34,9 +34,9 @@ struct cheatSettings {
     float radarOffsetX = 0.0f;
     float radarOffsetY = 0.0f;
 
-    // Anti-aim
+
     bool  antiaimEnabled = true;
-    int   antiaimMode = 1;     // 0=Jitter, 1=Spin, 2=Static, 3=TurnAround
+    int   antiaimMode = 1;     
     float antiaimPitch = 89.f;
     float antiaimYaw = 179.f;
     float antiaimSpinSpeed = 6.f;
