@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Offsets">
+      <UniqueIdentifier>{4a8f04d9-4fb7-4f89-96fd-3d7173cad391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Features">
+      <UniqueIdentifier>{2223e6a2-eaa1-45db-9a32-353a0c8a3d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{ff8bf58a-4e5a-483e-9946-7f53025e46db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\Dependencies">
+      <UniqueIdentifier>{631dbf56-8e11-49fa-8da1-e8b49a966048}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="buttons.hpp">
+      <Filter>Offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="offsets.hpp">
+      <Filter>Offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="client_dll.hpp">
+      <Filter>Offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneBoxESP.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Bhop.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Aimbot.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Triggerbot.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiAim.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imconfig.h">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="recoil.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Radar.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="structs.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+    <ClInclude Include="vmt.h">
+      <Filter>Features</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldToScreen.h">
+      <Filter>Features</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui.cpp">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_widgets.cpp">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_tables.cpp">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_draw.cpp">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\backends\imgui_impl_win32.cpp">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\backends\imgui_impl_dx11.cpp">
+      <Filter>ImGui\Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="antiaim.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Anti-Aim/Anti-Aim.vcxproj" Id="b3c02fbd-e4b8-4327-89ef-db4b3ea84c65" />
+</Solution>
