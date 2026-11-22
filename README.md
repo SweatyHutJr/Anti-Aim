@@ -1,144 +1,131 @@
+# Preview
+<p align="center">
+  <img src="Anti-Aim/Images/4Github2.png" width="600" alt="Console menu">
+</p>
 
-## Requirements
+<p align="center">
+  <img src="Anti-Aim/Images/4Github1.png" width="600" alt="Console menu">
+</p>
 
-- **Visual Studio 2022** (v143 toolset), C++20
-- **Windows 10/11** x64
-- CS2 installed (Steam)
-- DirectX 11 SDK
-- ImGui (included under `ImGUI/`)
+<p align="center">
+  <img src="Anti-Aim/Images/ImGUIMenu.png" width="600" alt="Console menu">
+</p>
 
-## Building
+# CS2 Internal
 
-1. Clone the repository.
-2. Open `Cheat.sln` in Visual Studio 2022.
-3. Set configuration to **Release | x64**.
-4. Build → Rebuild Solution.
-5. Output: `Release/Cheat.dll`.
+A fully-featured internal cheat for Counter-Strike 2, written in C++ and rendered
+through a DirectX 11 + ImGui overlay. The overlay is a layered, click-through,
+topmost window that automatically tracks the CS2 client area, so visuals sit
+exactly over the game with no manual positioning.
 
-The project uses `d3d11.lib`, `dxgi.lib`, and `d3dcompiler.lib` via
-`#pragma comment` — no extra linker config needed.
+## Features
 
-## Injecting
+### ESP (Extra Sensory Perception)
+- 2D box ESP sized to player height
+- Health bar with red→green gradient
+- Player name (cached, no per-frame RPM)
+- Distance in meters
+- Full skeleton (22 bones, drawn from cached bone array)
+- Head dot indicator
+- Optional team check to skip teammates
 
-- **For testing**: use a **standard `LoadLibrary` injector** (e.g., Process
-  Hacker 2, Xenos, or your own). Do **not** use manual map for first-time
-  testing — global constructors don't run under manual map and the
-  `inline` VmtHook objects won't be initialized.
-- The cheat waits for `client.dll` to load, sleeps 2 seconds to let the input
-  system initialize, then installs hooks.
-- A console window opens with diagnostic output. Press **F11** to unload.
+### Aimbot
+- Adjustable FOV (visualized as a circle on screen)
+- Adjustable smoothing (1.0 = instant, 15.0 = very slow)
+- Hold **RMB** to activate
+- Targets nearest player to crosshair within FOV
+- Uses cached bone positions for aim point
+- Only works if the player is spotted by another player, preventing locking on through walls
 
-## Usage
+### Triggerbot
+- Auto-fires when crosshair is on an enemy
+- Respects team check
+- Toggle via F3
 
-### Menu
+### Bunnyhop
+- Hold **SPACE** to auto-bhop
+- Toggle via F5
 
-Press **INSERT** to toggle the menu. The overlay automatically becomes
-click-through when the menu is hidden.
-
-### Keybinds (default)
-
-| Key | Action |
-|---|---|
-| INSERT | Toggle menu |
-| F1 | Toggle ESP |
-| F2 | Toggle team check |
-| F3 | Toggle triggerbot |
-| F4 | Toggle aimbot |
-| F5 | Toggle bunnyhop |
-| F11 | Unload cheat |
+## RCS Anti-Recoil (Broken Currently)
 
 ## Anti-Aim
+- Spin, turn around, and jitter options
+- Manually adjust spin
+- Manually Adjust Yaw + Pitch
 
-The anti-aim has four modes, selectable from the menu:
+### Live ImGUI Menu
+- Toggle menu with INSERT key
+- Shows current ON/OFF state of every feature
+- Shows live FOV and smoothing values as you adjust them
 
-| Mode | Behavior |
-|---|---|
-| **Jitter** | Alternates ±`Jitter Angle` each tick (aggressive, staggers visually) |
-| **Spin** | Continuous rotation by `Spin Speed` degrees per tick (smooth) |
-| **Static** | Fixed yaw offset (use `Yaw Offset` slider) |
-| **Turn Around** | Faces exactly 180° behind the camera |
+## Technical details
 
-### Recommended settings for smooth spin
+- **Overlay:** `WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE`
+  — click-through, never steals focus, sits above the game.
+- **Window tracking:** overlay repositions only when the game window
+  moves/resizes (avoids waking DWM every frame).
+- **Caching:** entity list, controllers, pawns, names, teams, and bone array
+  pointers are cached and refreshed every 3s (or on demand). Bone positions are
+  batch-read in a single `ReadProcessMemory` call per player instead of 22
+  separate reads.
+- **Pruning:** caches are pruned of dead pawns each refresh to prevent stale
+  pointers.
+- **World-to-screen:** standard view-matrix projection with screen-bounds
+  culling before drawing.
+- **Graceful teardown:** on F11 or DLL unload, ImGui, D3D11, the overlay window,
+  the window class, and the console are all released in order.
 
-| Setting | Value | Why |
-|---|---|---|
-| Mode | Spin | Continuous rotation, no teleport stagger |
-| Pitch | 89° | Look almost straight down |
-| Spin Speed | 5-6°/tick | ~320-384°/sec — one rotation per second |
-| Movement Fix | On | Preserves WASD direction at all spin angles |
+## Controls
 
-### How the anti-aim works
+| Key        | Action                          |
+|------------|---------------------------------|
+| F1         | ESP on/off                      |
+| F2         | Team check on/off               |
+| F3         | Triggerbot on/off               |
+| F4         | Aimbot on/off                   |
+| F5         | Bunnyhop on/off                 |
+| `[`        | Decrease FOV                    |
+| `]`        | Increase FOV                    |
+| `-`        | Decrease aimbot smoothing       |
+| `+`        | Increase aimbot smoothing       |
+| **RMB**    | Hold to aimbot                  |
+| **LMB**    | Fire / shoot                    |
+| **SPACE**  | Hold to bunnyhop                |
+| F11        | Exit cheat                      |
 
-The cheat uses a two-hook system:
+## Build
 
-1. **`CreateMove` (slot 25)** — after the game populates the user command,
-   `OnMove` computes the fake angles and saves `g_lastCmd` / `g_lastVa`.
-2. **`ValidateInput` (slot 8)** — the hook calls the original (so the camera
-   stays on your real mouse look), then patches `g_lastVa` with the fake
-   angles. The patched command is what gets serialized to the server.
+- Visual Studio 2022 (x64)
+- C++17 or later
+- DirectX 11 SDK (bundled with Windows SDK)
+- ImGui (DX11 + Win32 backends)
+- Linked against `d3d11.lib`, `dxgi.lib`
 
-This design keeps your **camera real** (you can aim normally) while the
-**server sees spinning angles** (defeats enemy aimbot / resolver).
+## Notes
 
-### Movement Fix
+- Offsets live in `offsets.h` / `client_dll.hpp` /  `buttons.h` and must be updated after
+  CS2 patches.
+- The overlay uses a color-keyed layered window; the render target is cleared
+  to `(0,0,0,0)` so only ImGui draw data is visible.
+- Console menu is ASCII-only so it renders correctly regardless of code page.
 
-The original naive movement fix (`rotate forward/side by delta`) breaks
-movement when the yaw delta crosses ±90°. The current implementation
-re-derives the intended **world-space velocity** from the real angle, then
-re-projects it onto the fake angle's forward/side axes. This keeps WASD
-working at every anti-aim angle.
+> For educational and research purposes only.
 
-## Configuration
+## Installation
 
-All settings are edited live in the ImGui menu. There is no config file
-system yet — settings reset on re-inject.
-
-## Regenerating Offsets
-
-After each CS2 update, `offsets.hpp` and `client_dll.hpp` become stale.
-Regenerate them:
-
-1. Go to [github.com/a2x/cs2-dumper](https://github.com/a2x/cs2-dumper).
-2. Download the latest `offsets.hpp` and `client_dll.hpp`.
-3. Replace the files in the project root.
-4. Rebuild.
-
-The `CreateMove` signature and `ValidateInput` slot index typically survive
-minor updates, but verify after major patches:
-
-- `CreateMove` pattern: `48 8B C4 4C 89 40 ? 48 89 48 ? 55 53 57 41 55`
-- `ValidateInput` slot: `8` (confirmed on current build)
-
-## Troubleshooting
-
-| Symptom | Cause | Fix |
-|---|---|---|
-| Cheat doesn't inject | DLL not built, or injector failed | Rebuild, verify DLL path, use standard `LoadLibrary` injector |
-| Console shows `input is null` | `dwCSGOInput` offset stale | Re-dump offsets from cs2-dumper |
-| `Hooks OK` printed but no ESP | `dwEntityList` / `dwViewMatrix` stale | Re-dump offsets |
-| `CM=0` in console | `CreateMove` hook not installed | Verify `vtable[25]` is `CreateMove` — check bytes |
-| `VI=0` in console | `ValidateInput` hook not installed | Try slot 8, then 7, 9 |
-| Anti-aim camera spins | Patching before `original()` | Ensure `ValidateInputHook` calls `original` first |
-| Movement freezes at some angles | Naive `MovementFix` | Use the world-vector re-projection version |
-| Game freezes at Phase 2 | Called `vtable[7]` / `vtable[9]` as Get/SetViewAngles | Don't call those — patch `g_lastVa` directly |
-| Game crashes on inject | VMT patcher passed wrong pointer | Verify `VmtHook::Create(vtable, slot, hook)` |
-
-## Credits
-
-- **asphyxia-cs2** — hooking architecture and VMT pattern
-- **cs2-dumper** (a2x) — offset generation
-- **ImGui** — overlay UI
-- **UnknownCheats** community — anti-aim research and discussions
-
-## License
-
-This project is provided **as-is** for educational purposes. No warranty is
-provided. You are solely responsible for how you use this code. Redistribution
-of compiled binaries without source is discouraged.
+### Prerequisites
+- **[Extreme Injector v3.7.2](https://github.com/master131/ExtremeInjector)** downloaded and extracted
 
 ---
 
-**Last updated**: current build target — CS2 (build 14073, October 2025)
+- Anti-Aim.dll from Releases
+- Inject via Extreme Injector v3.7.2 and set injection method to Manual Map
+- Make sure game is in windowed fullscreen or windowed
+- If ESP does't automatically appear, press F11 to unload then inject once in game
 
-*If you are reading this and considering using it online: don't. It's not
-worth the ban.*
+
+Do not scramble the DLL as it will likely crash the game. If it crashes while not scrambled then the offsets must be updated.
+Windows Defender will likely flag Extreme Injector. You have to make an exception when the notification appears when launching Extreme Injector, select "allow on device." If Windows Defender is still removing the file then turn off real-time protection.
+
+# Adding soon
+- Chams
