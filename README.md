@@ -120,6 +120,7 @@ exactly over the game with no manual positioning.
 
 - Anti-Aim.dll from Releases
 - Inject via Extreme Injector v3.7.2 and set injection method to Manual Map
+- INJECT IN GAME, MAIN MENU DOESN'T WORK (Working on fix and Session Management)
 - Make sure game is in windowed fullscreen or windowed
 - If ESP does't automatically appear, press F11 to unload then inject once in game
 
