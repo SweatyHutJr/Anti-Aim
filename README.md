@@ -1,1 +1,132 @@
-# Anti-Aim
+# Preview
+<p align="center">
+  <img src="Anti-Aim/Images/4Github2.png" width="600" alt="Console menu">
+</p>
+
+<p align="center">
+  <img src="Anti-Aim/Images/4Github1.png" width="600" alt="Console menu">
+</p>
+
+<p align="center">
+  <img src="Anti-Aim/Images/ImGUIMenu.png" width="600" alt="Console menu">
+</p>
+
+# CS2 Internal
+
+A fully-featured internal cheat for Counter-Strike 2, written in C++ and rendered
+through a DirectX 11 + ImGui overlay. The overlay is a layered, click-through,
+topmost window that automatically tracks the CS2 client area, so visuals sit
+exactly over the game with no manual positioning.
+
+## Features
+
+### ESP (Extra Sensory Perception)
+- 2D box ESP sized to player height
+- Health bar with red→green gradient
+- Player name (cached, no per-frame RPM)
+- Distance in meters
+- Full skeleton (22 bones, drawn from cached bone array)
+- Head dot indicator
+- Optional team check to skip teammates
+
+### Aimbot
+- Adjustable FOV (visualized as a circle on screen)
+- Adjustable smoothing (1.0 = instant, 15.0 = very slow)
+- Hold **RMB** to activate
+- Targets nearest player to crosshair within FOV
+- Uses cached bone positions for aim point
+- Only works if the player is spotted by another player, preventing locking on through walls
+
+### Triggerbot
+- Auto-fires when crosshair is on an enemy
+- Respects team check
+- Toggle via F3
+
+### Bunnyhop
+- Hold **SPACE** to auto-bhop
+- Toggle via F5
+
+## RCS Anti-Recoil (Broken Currently)
+
+## Anti-Aim
+- Spin, turn around, and jitter options
+- Manually adjust spin
+- Manually Adjust Yaw + Pitch
+
+### Live ImGUI Menu
+- Toggle menu with INSERT key
+- Shows current ON/OFF state of every feature
+- Shows live FOV and smoothing values as you adjust them
+
+## Technical details
+
+- **Overlay:** `WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE`
+  — click-through, never steals focus, sits above the game.
+- **Window tracking:** overlay repositions only when the game window
+  moves/resizes (avoids waking DWM every frame).
+- **Caching:** entity list, controllers, pawns, names, teams, and bone array
+  pointers are cached and refreshed every 3s (or on demand). Bone positions are
+  batch-read in a single `ReadProcessMemory` call per player instead of 22
+  separate reads.
+- **Pruning:** caches are pruned of dead pawns each refresh to prevent stale
+  pointers.
+- **World-to-screen:** standard view-matrix projection with screen-bounds
+  culling before drawing.
+- **Graceful teardown:** on F11 or DLL unload, ImGui, D3D11, the overlay window,
+  the window class, and the console are all released in order.
+
+## Controls
+
+| Key        | Action                          |
+|------------|---------------------------------|
+| F1         | ESP on/off                      |
+| F2         | Team check on/off               |
+| F3         | Triggerbot on/off               |
+| F4         | Aimbot on/off                   |
+| F5         | Bunnyhop on/off                 |
+| `[`        | Decrease FOV                    |
+| `]`        | Increase FOV                    |
+| `-`        | Decrease aimbot smoothing       |
+| `+`        | Increase aimbot smoothing       |
+| **RMB**    | Hold to aimbot                  |
+| **LMB**    | Fire / shoot                    |
+| **SPACE**  | Hold to bunnyhop                |
+| F11        | Exit cheat                      |
+
+## Build
+
+- Visual Studio 2022 (x64)
+- C++17 or later
+- DirectX 11 SDK (bundled with Windows SDK)
+- ImGui (DX11 + Win32 backends)
+- Linked against `d3d11.lib`, `dxgi.lib`
+
+## Notes
+
+- Offsets live in `offsets.h` / `client_dll.hpp` /  `buttons.h` and must be updated after
+  CS2 patches.
+- The overlay uses a color-keyed layered window; the render target is cleared
+  to `(0,0,0,0)` so only ImGui draw data is visible.
+- Console menu is ASCII-only so it renders correctly regardless of code page.
+
+> For educational and research purposes only.
+
+## Installation
+
+### Prerequisites
+- **[Extreme Injector v3.7.2](https://github.com/master131/ExtremeInjector)** downloaded and extracted
+
+---
+
+- Anti-Aim.dll from Releases
+- Inject via Extreme Injector v3.7.2 and set injection method to Manual Map
+- INJECT IN GAME, MAIN MENU DOESN'T WORK (Working on fix and Session Management)
+- Make sure game is in windowed fullscreen or windowed
+- If ESP does't automatically appear, press F11 to unload then inject once in game
+
+
+Do not scramble the DLL as it will likely crash the game. If it crashes while not scrambled then the offsets must be updated.
+Windows Defender will likely flag Extreme Injector. You have to make an exception when the notification appears when launching Extreme Injector, select "allow on device." If Windows Defender is still removing the file then turn off real-time protection.
+
+# Adding soon
+- Chams
