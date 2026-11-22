@@ -35,7 +35,7 @@ struct cheatSettings {
     float radarOffsetY = 0.0f;
 
 
-    bool  antiaimEnabled = true;
+    bool  antiaimEnabled = false;
     int   antiaimMode = 1;     
     float antiaimPitch = 89.f;
     float antiaimYaw = 179.f;
