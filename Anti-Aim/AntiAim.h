@@ -14,28 +14,31 @@ class C_CSPlayerPawn;
 
 namespace F::RAGEBOT::ANTIAIM
 {
+    enum class AAMode
+    {
+        Jitter,
+        Spin,
+        Static,
+        TurnAround
+    };
+
     inline QAngle_t actual_angles{};
     inline QAngle_t fake_angles{};
-
-    // Saved by OnMove, used by ValidateInputHook
     inline CBaseUserCmdPB* g_lastCmd = nullptr;
     inline CMsgQAngle* g_lastVa = nullptr;
 
     struct Settings_t
     {
-        bool  enabled = true;
-        bool  jitter = true;
-        bool  moveFix = true;
-        float pitch = 89.f;
-        float yawBase = 179.f;
+        bool   enabled = true;
+        bool   moveFix = true;
+        AAMode mode = AAMode::Spin;
+        float  pitch = 89.f;
+        float  yawBase = 179.f;
+        float  spinSpeed = 6.f;
+        float  jitterAngle = 20.f;
     };
     inline Settings_t settings{};
 
-    bool CanRun(CBaseUserCmdPB* pBaseCmd,
-        CCSPlayerController* pLocalController,
-        C_CSPlayerPawn* pLocalPawn);
-
-    void OnMove(CBaseUserCmdPB* pBaseCmd,
-        CCSPlayerController* pLocalController,
-        C_CSPlayerPawn* pLocalPawn);
+    bool CanRun(CBaseUserCmdPB* pBaseCmd, CCSPlayerController* pLocalController, C_CSPlayerPawn* pLocalPawn);
+    void OnMove(CBaseUserCmdPB* pBaseCmd, CCSPlayerController* pLocalController, C_CSPlayerPawn* pLocalPawn);
 }

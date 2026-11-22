@@ -165,9 +165,25 @@ inline void DrawMenu() {
     ImGui::Separator();
     ImGui::Text("Anti-Aim");
     ImGui::Checkbox("Anti-Aim Enabled", &settings.antiaimEnabled);
-    ImGui::Checkbox("Jitter", &settings.antiaimJitter);
-    ImGui::SliderFloat("AA Pitch", &settings.antiaimPitch, -89.f, 89.f, "%.0f");
-    ImGui::SliderFloat("AA Yaw", &settings.antiaimYaw, 0.f, 180.f, "%.0f");
+    ImGui::Combo("Mode", &settings.antiaimMode, "Jitter\0Spin\0Static\0Turn Around\0");
+
+    switch (settings.antiaimMode) {
+    case 0:
+        ImGui::SliderFloat("Jitter Angle", &settings.antiaimJitterAngle, 0.f, 90.f, "%.0f deg");
+        break;
+    case 1:
+        ImGui::SliderFloat("Spin Speed", &settings.antiaimSpinSpeed, 1.f, 20.f, "%.0f deg/tick");
+        break;
+    case 2:
+        ImGui::SliderFloat("Yaw Offset", &settings.antiaimYaw, 0.f, 180.f, "%.0f deg");
+        break;
+    case 3:
+        ImGui::TextDisabled("(no params)");
+        break;
+    }
+
+    ImGui::SliderFloat("Pitch", &settings.antiaimPitch, -89.f, 89.f, "%.0f deg");
+    ImGui::Checkbox("Movement Fix", &settings.antiaimMoveFix);
 
     ImGui::Separator();
 

@@ -72,11 +72,21 @@ double __fastcall H::CreateMoveHook(CCSGOInput* input, unsigned int slot, void* 
 {
     g_createMoveCalls++;
 
-    // Sync ImGui settings -> AA settings (every tick)
-    F::RAGEBOT::ANTIAIM::settings.enabled = settings.antiaimEnabled;
-    F::RAGEBOT::ANTIAIM::settings.jitter = settings.antiaimJitter;
-    F::RAGEBOT::ANTIAIM::settings.pitch = settings.antiaimPitch;
-    F::RAGEBOT::ANTIAIM::settings.yawBase = settings.antiaimYaw;
+    // Sync ImGui settings -> AA settings
+    auto& aa = F::RAGEBOT::ANTIAIM::settings;
+    aa.enabled = settings.antiaimEnabled;
+    aa.moveFix = settings.antiaimMoveFix;
+    aa.pitch = settings.antiaimPitch;
+    aa.yawBase = settings.antiaimYaw;
+    aa.spinSpeed = settings.antiaimSpinSpeed;
+    aa.jitterAngle = settings.antiaimJitterAngle;
+
+    switch (settings.antiaimMode) {
+    case 0: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Jitter;     break;
+    case 1: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Spin;       break;
+    case 2: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::Static;     break;
+    case 3: aa.mode = F::RAGEBOT::ANTIAIM::AAMode::TurnAround; break;
+    }
 
     auto orig = reinterpret_cast<CreateMoveFn>(H::oCreateMove.GetOriginal());
     double ret = orig ? orig(input, slot, cmd) : 0.0;
@@ -144,7 +154,7 @@ static int FindSlotForAddr(void** vtable, int count, uintptr_t addr)
 
 bool Hooks::Init()
 {
-    printf("[Init] BUILD MARKER v12\n");
+    printf("[Init] BUILD MARKER v13\n");
     HMODULE hClient = GetModuleHandleA("client.dll");
     if (!hClient) return false;
     uintptr_t clientBase = reinterpret_cast<uintptr_t>(hClient);

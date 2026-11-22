@@ -19,34 +19,30 @@ struct cheatSettings {
     bool rcsEnabled = false;
     float rcsScale = 1.0f;
 
-    // ESP element toggles
     bool showBox = true;
     bool showNames = true;
     bool showDistance = false;
     bool showBones = false;
-    bool showHealth = true;   
+    bool showHealth = true;
+    bool showFovCircle = true;
 
-    // Aim visual toggles
-    bool showFovCircle = true;   
-
-    // Radar
     bool  radarEnabled = false;
     bool  radarTeamCheck = true;
     float radarRange = 3000.0f;
-    float radarSize = 150.0f;   // radius in pixels
-    float radarOpacity = 0.70f;    // 0.0 - 1.0  (background circle alpha)
-    float radarOffsetX = 0.0f;     // px from top-left of screen
+    float radarSize = 150.0f;
+    float radarOpacity = 0.70f;
+    float radarOffsetX = 0.0f;
     float radarOffsetY = 0.0f;
 
     // Anti-aim
-    bool antiaimEnabled = true;
-    bool antiaimJitter = true;
+    bool  antiaimEnabled = true;
+    int   antiaimMode = 1;     // 0=Jitter, 1=Spin, 2=Static, 3=TurnAround
     float antiaimPitch = 89.f;
     float antiaimYaw = 179.f;
-
-
-}inline settings;
-
+    float antiaimSpinSpeed = 6.f;
+    float antiaimJitterAngle = 20.f;
+    bool  antiaimMoveFix = true;
+} inline settings;
 
 inline void handleInputs() {
     if (GetAsyncKeyState(VK_F1) & 1) settings.espEnabled = !settings.espEnabled;
@@ -72,4 +68,3 @@ inline void handleInputs() {
         if (settings.aimbotFov > 45.0f) settings.aimbotFov = 45.0f;
     }
 }
-
