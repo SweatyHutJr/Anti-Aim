@@ -2,8 +2,8 @@
 #include "menu.h"
 
 inline void RunRCS(uintptr_t clientBase, uintptr_t localPawn) {
-    if (!settings.rcsEnabled) 
-         return;
+    if (!settings.rcsEnabled)
+        return;
     if (settings.rcsScale <= 0.0f)
         return;
     if (!(GetAsyncKeyState(VK_LBUTTON) & 0x8000))

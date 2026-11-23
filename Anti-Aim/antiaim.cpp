@@ -8,14 +8,13 @@ namespace F::RAGEBOT::ANTIAIM
 
     bool CanRun(CBaseUserCmdPB* pBaseCmd, CCSPlayerController*, C_CSPlayerPawn*)
     {
-        if (!settings.enabled) 
+        if (!settings.enabled)
             return false;
         if (!pBaseCmd)
             return false;
         return true;
     }
 
-    // Re-derive forward/side from world-space velocity so movement never breaks
     static void MovementFix(CBaseUserCmdPB* pBaseCmd,
         const QAngle_t& real, const QAngle_t& fake)
     {
